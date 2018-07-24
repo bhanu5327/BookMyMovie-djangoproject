@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<body style="background-color: dimgray">
+<div class="container" xmlns="http://www.w3.org/1999/html">
+    <form action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="allseats" id="allseats"/>
+        <input type="hidden" name="timevalue" id="timevalue" value={{timevalue}}/>
+        {% csrf_token %}
+
+
+
+<script type="text/javascript">
+
+
+        var s="";var ticketcost=100;var total=0;
+        function selectSeats(id)
+        {
+            document.getElementById(id).style.backgroundColor="red";
+            if (!s.includes(id))
+            {
+                s = s + id;
+
+                total=total+ticketcost;
+            }
+            else
+            {
+                s = s.replace(id,"");
+                total=total-ticketcost;
+                document.getElementById(id).style.backgroundColor="";
+            }
+
+            document.getElementById("cost").innerText=total;
+            if(total>0)
+            {
+                document.getElementById("book").type = "submit";
+            }
+            else
+            {
+                document.getElementById("book").type = "hidden";
+            }
+
+            document.getElementById("paycost").value=total;
+            document.getElementById("allseats").value=s;
+
+        }
+
+</script>
+
+<br><br><br><br>
+<center>
+    <center><strong style="color: black">DATE: {{datevalue}} , TIME: {{timevalue}}</strong></center>
+<table>
+
+        {% for row in seatslist %}
+            <tr>
+
+
+                    <td ></td>
+                    {% for col in row %}
+                    {% if col in seatsbookedlist %}
+
+                        <td><a  class="btn btn-default active" style="background-color: black;color:whitesmoke" >{{col}}</a></td>
+                    {% else %}
+                    <td><a  class="btn btn-default active" onclick="selectSeats(id)" id={{col}}>{{col}}</a></td>
+                    {% endif %}
+                    {%  endfor %}
+
+
+            </tr>
+        {%  endfor %}
+
+</table>
+    <br>
+    <br>
+    <div align="center"><strong style="color: black">All eyes this way please</strong></div>
+    <br>
+    <strong style="color: black">TotalCost: </strong> <input readonly="True" type="hidden" name="paycost" id="paycost"/>
+    <label  id="cost" style="color: black">0</label>
+    <input type="hidden" class="btn btn-primary" value="book" id="book"/>
+    </center>
+
+</form>
+</div>
+</body>
+{% endblock %}

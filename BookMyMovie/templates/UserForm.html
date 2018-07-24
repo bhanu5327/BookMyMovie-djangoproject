@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<html>
+
+<style>
+    strong,li
+    {
+        color: white;
+        font-size: larger;
+        font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    }
+    ul{
+        list-style-type: none;
+
+    }
+    .card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+    padding: 2px 16px;
+}
+</style>
+<body style="background-color: darkslateblue">
+<br>
+<br><br><br>
+<div class="container" >
+        {% for userinfo in userinfo_list%}
+        <div align="right"> <tr><strong>Amount in Wallet : </strong>{{userinfo.Wallet}}</tr>
+            <a href="{% url 'BookMyMovieApp:edituserdetails' pk=userinfo.id %}" class="btn btn-default active">Edit</a>
+        </div>
+        <div align="center">
+
+
+        <div class="card" style="width: 30%;">
+        <ul >
+
+
+                <li >
+
+
+                    <img src="{{userinfo.Photo.url}}" class="img-thumbnail" style="border-color: navy;"  width="200px" />
+
+                </li>
+                <br><br><br>
+
+
+            <li><strong>UserName : </strong>{{userdetails.username}}</li><br><br>
+            <li><strong>FirstName : </strong>{{userdetails.first_name}}</li><br><br>
+            <li><strong>LastName : </strong>{{userdetails.last_name}}</li><br><br>
+            <li><strong>Email ID : </strong>{{userdetails.email}}</li>
+
+
+        </ul>
+            {%if request.session.location_id %}
+            {%if request.session.movie_id %}
+            {%if request.session.theatre_id %}
+            {%if request.session.bookedseats %}
+             {%if request.session.payment %}
+            <a href="{% url 'BookMyMovieApp:Creditcard' %}" class="btn btn-default active">Back</a>
+            {%else%}
+            <a href="{% url 'BookMyMovieApp:BookingSummary' pk1=request.session.theatre_id datevalue=request.session.datevalue timevalue=request.session.timevalue bookedseats=request.session.bookedseats pk=request.session.cost %}" class="btn btn-default active">Back</a>
+           {%endif%}
+            {%else%}
+            <a href="{% url 'BookMyMovieApp:ViewSeats' pk=request.session.theatre_id datevalue=request.session.datevalue timevalue=request.session.timevalue %}" class="btn btn-default active">Back</a>
+            {%endif%}
+            {%elif request.session.movieinfo%}
+            <a href="{% url 'BookMyMovieApp:ViewMovie' pk1=request.session.location_id pk=request.session.movie_id%}" class="btn btn-default active">Back</a>
+            {%else%}
+            <a href="{% url 'BookMyMovieApp:ViewTheatres' pk1=request.session.location_id pk=request.session.movie_id%}" class="btn btn-default active">Back</a>
+            {%endif%}
+            {%else%}
+            <a href="{% url 'BookMyMovieApp:ViewMovies' pk=request.session.location_id %}" class="btn btn-default active">Back</a>
+            {%endif%}
+            {%else%}
+            <a href="{% url 'BookMyMovieApp:ViewLocations' %}" class="btn btn-default active">Back</a>
+            {%endif%}
+        </div>
+        </div>
+        </div>
+
+
+
+{% endfor %}
+
+</div>
+</body>
+</html>
+{% endblock %}

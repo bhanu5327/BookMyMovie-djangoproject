@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+         .card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+    padding: 2px 16px;
+}
+    </style>
+</head>
+<body background="{%static 'images/camera.jpg'%}" style="background-repeat: no-repeat;background-size: cover;">
+<br>
+<br>
+<br><br><br><br>
+    {% if 'BookMyMovieApp.add_locations' in user_permissions %}
+    <div align="right"><a href="{% url 'BookMyMovieApp:AddLocation'  %}" >AddLocation</a></div>
+    {%endif%}
+    <form action="" method="post">
+    <div class="dropdown" align="center">
+        <button class="btn btn-primary dropdown-toggle"  type="button" data-toggle="dropdown">
+            Select Your Location
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu" style=" max-height: 100px;overflow-y: scroll;left:44%">
+
+
+       {% for location in Locations_List %}
+
+            <li > <a style="width: 100%;background-color: dimgray" href="{% url 'BookMyMovieApp:ViewMovies' pk=location.id    %}"
+                     class="btn btn-default" >
+                {{location.LocationName}}</a></li>
+
+        {% endfor %}
+
+
+        </ul>
+    </div>
+        {% csrf_token %}
+</form>
+        <br>
+        <br>
+         <br>
+
+</body>
+{% endblock %}

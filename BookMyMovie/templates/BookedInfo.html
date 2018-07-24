@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<br>
+<style>
+.borderexample {
+    background-color: whitesmoke;
+    border: solid 5px darkslategray;
+    width: 360px;
+    height: 400px;
+}
+
+hr
+{
+background-color: dimgrey;
+    color: dimgrey;
+    border: solid 2px dimgrey;
+    height: 5px;
+
+}
+
+</style>
+<body style="background-color: #444444">
+<br><br><br><br>
+<div class="container" >
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div align="center">
+
+        <div class="borderexample" >
+            <br>
+            <div align="center"><strong>Booked Information</strong></div>
+            <hr>
+            <img src="{{theatreinfo.Movie.MoviePoster.url}}" class="img-thumbnail" width="130px" height="180px" align="left"/>
+        <br><br><strong>{{theatreinfo.Movie.MovieName}}</strong>
+        <br><br><strong>Theatre Name: {{theatreinfo.TheatreName}}</strong>
+        <br><br><strong>{{theatreinfo.TheatreAddress}}</strong><br><br>
+            <div align="center"><strong> seatnumbers: {{bookedseats}}</strong></div><br>
+            <div align="center" ><strong> movietime: {{timevalue}}</strong></div>
+        <br><br>
+            <div align="center">Amount  Paid:
+                <strong>{{paycost}}/-</strong>
+            </div>
+        </div><br>
+            <center>
+            <div class="alert alert-success">
+             <strong>Booked successfully! Your TicketInfo sent to your Mail.</strong>
+            </div>
+            </center>
+        </div>
+
+
+</form>
+
+</div>
+</body>
+{% endblock %}

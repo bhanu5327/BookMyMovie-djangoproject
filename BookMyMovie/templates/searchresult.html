@@ -1,0 +1,28 @@
+
+{% block content %}
+<br>
+<br>
+
+
+{% if searchresult %}
+
+    <div class="card">
+
+  <ul class="list-group list-group-flush" style="" >
+      {% for movie in searchresult %}
+            <li class="list-group-item" style="background-color: #444444;width: 200%;">
+            <img src="{{movie.MoviePoster.url}}" width="8%" height="5%" class="img-circle"/>
+            <a  href="{% url 'BookMyMovieApp:ViewMovie'  pk1=location_id pk=movie.id %}">{{ movie.MovieName }}</a>
+
+            </li>
+      {% endfor %}
+  </ul>
+
+</div>
+
+{% endif %}
+
+
+
+{% endblock %}
+

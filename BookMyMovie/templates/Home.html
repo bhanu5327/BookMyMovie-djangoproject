@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+<table>
+    <tr><th>MoviePoster</th></tr>
+    {% for Movie in data %}
+    <tr><div><td><div><img src="{{ Movie.MoviePoster }} " width="20%" height="10%"/></div></td>
+
+        <td>
+
+            <a href="">edit</a>
+
+            |
+
+            <a href="">delete</a>
+
+        </td></div>
+        </tr>
+    {% endfor %}
+</table>
+
+
+
+    <script >
+
+             var e = document.getElementById("LocationSelect")
+        var LocationId = e.options[e.selectedIndex].value
+        document.write(LocationId)
+
+
+</script>
+
+    <div class="container">
+    <a href="{% url 'BookMyMovieApp:AddLocation' %}" class="btn btn-primary a-btn-slide-text" >
+        <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
+        <span><strong>Add</strong></span>
+    </a>
+    <a href="{% url 'BookMyMovieApp:EditLocation' pk=2 %}" class="btn btn-primary a-btn-slide-text">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        <span><strong>Edit</strong></span>
+    </a>
+
+    <a href="{% url 'BookMyMovieApp:DeleteLocation' pk=2 %}" class="btn btn-primary a-btn-slide-text">
+       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        <span><strong>Delete</strong></span>
+    </a>
+	</div>
+
+
+{% endblock %}

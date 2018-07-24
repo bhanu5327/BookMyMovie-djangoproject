@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<body style="background-color: gray">
+<br><br><br><br>
+{% if 'BookMyMovieApp.add_Theatres' in user_permissions %}
+<a href="{% url 'BookMyMovieApp:AddTheatre' pk1=locationid pk=movieid %}" class="btn btn-default active">
+    <span class="glyphicon glyphicon-plus">AddTheatre</span></a>
+{%endif%}
+
+
+
+
+    {% for theatre in Theatres_List %}
+            <div id="container" style="border-style: inset;border-width: thick;height: 160px">
+                <div style="float: left;width: 25%">
+                <p><strong>TheatreName: </strong>{{ theatre.TheatreName }}</p>
+                <p><strong>TheatreAddress: </strong> {{ theatre.TheatreAddress}}</p>
+                <p><strong>TheatreRating: </strong>{{ theatre.TheatreRating }}</p>
+                <p><strong>Location: </strong>{{ theatre.Location.LocationName }}</p>
+                <p><strong>MovieName: </strong>{{ theatre.Movie.MovieName }}</p>
+                </div>
+                <div align="center" style="position:relative;top: 40%;">
+                <form action="{% url 'BookMyMovieApp:ViewTheatres' pk1=locationid  pk=movieid %}" method="post">
+                <p><input type="date" name="date" id="date"
+                value={{startdate}}
+               min={{startdate}} max={{enddate}} />
+
+
+                <button   class="btn btn-primary" name="time"  value="11:00AM" >11:00AM</button>
+                     <button  class="btn btn-primary" name="time"  value="2:00PM" >2:00PM</button>
+                    <button  class="btn btn-primary" name="time" value="6:00PM" >6:00PM</button>
+                    <button  class="btn btn-primary" name="time" value="9:00PM" >9:00PM</button>
+                </p>
+
+                    <input type="hidden" name="theatre_id" value="{{theatre.id}}"/>
+                    {% csrf_token %}
+                    </form>
+                </div>
+                    <div>
+                        {% if 'BookMyMovieApp.change_Theatres' in user_permissions %}
+                    <a href="{% url 'BookMyMovieApp:EditTheatre' pk2=locationid pk1=movieid pk=theatre.id %}" class="btn btn-default active">
+                        <span class="glyphicon glyphicon-pencil">edit</span></a>
+                        {%endif%}
+
+                        {% if 'BookMyMovieApp.delete_Theatres' in user_permissions %}
+                    <a href="{% url 'BookMyMovieApp:DeleteTheatre' pk2=locationid pk1=movieid pk=theatre.id %}" class="btn btn-default active">
+                        <span class="glyphicon glyphicon-trash">delete</span></a>
+                        {%endif%}
+                    </div>
+
+            </div>
+
+
+
+    {% endfor %}
+
+</body>
+{% endblock %}
+

@@ -1,0 +1,58 @@
+{% extends "base.html"%}
+{% block content %}
+{% load static %}
+ <html>
+<head>
+<style>
+    .jumbotron{
+        background-image:url('');
+        background-repeat:no-repeat;
+        background-size:100%;
+        background-color: darkslategrey;
+        color: floralwhite;
+    }
+</style>
+</head>
+<body id="bg" >
+<br><br><br><br>
+<center>
+<div class="jumbotron"   style="width: 400px ;">
+	<div class="cols-xs-3 cols-xs-offset-3">
+    <form method="post">
+
+    {% csrf_token %}
+    <fieldset>
+        <legend style="color: floralwhite">Signup</legend>
+        <div class="form-group" style="width: 250px ;">
+            <label >First Name</label>
+            {{form.first_name}}
+        </div>
+        <div class="form-group" style="width: 250px ;">
+            <label>Last Name</label>
+            {{form.last_name}}
+        </div>
+        <div class="form-group" style="width: 250px ;">
+            <label>User Name</label>
+            {{form.username}}
+        </div>
+
+        <div class="'form-group" style="width: 250px ;">
+            <label>Email</label>
+            {{form.email}}
+        </div>
+
+        <div class="'form-group" style="width: 250px ;">
+            <label>Password</label>
+            {{form.password}}
+        </div>
+    </fieldset>
+        <br/>
+        <button style="background-color: darkslateblue" type="submit" class="btn btn-primary btn-lg">SignUp</button> <br>
+
+    </form>
+    </div>
+</div>
+    </center>
+ </body>
+</html>
+{% endblock %}

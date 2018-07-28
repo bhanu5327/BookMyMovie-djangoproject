@@ -89,36 +89,33 @@
     </ol>
 
     <!-- Wrapper for slides -->
-    <div class="carousel-inner" style="height: 350px;width:51%;">
+    <div class="carousel-inner" style="height: 350px;width:80%;">
         {% if Movie1 %}
-      <div class="item active">
-          <a href="{% url 'BookMyMovieApp:ViewTheatres' pk1=location_id pk=Movie1.id  %}"
-       style="width: 100%;background-color: darkslategray">
-              <img src="{{ Movie1.MoviePoster.url}}" alt="New York" class="img-thumbnail" width="500px" height="800px">
-        <div class="carousel-caption">
-          <h3 style="color:darkslateblue">{{Movie1.MovieName}}</h3>
 
-        </div></a>
+      <div class="item active">
+          <h6 style="color:white">{{Movie1.MovieName}}</h6>
+          <a href="{% url 'BookMyMovieApp:ViewMovie' pk1=location_id  pk=Movie1.id%}"
+       style="width: 100%;background-color: darkslategray">
+              <img src="{{ Movie1.MoviePoster.url}}" alt="New York" class="img-thumbnail" width="800px" height="400px">
+        </a>
       </div>
         {% endif %}
 
         {% if Movie2 %}
             <div class="item ">
-             <a href="{% url 'BookMyMovieApp:ViewTheatres' pk1=location_id pk=Movie2.id  %}"
-                style="width: 100%;background-color: darkslategray"> <img src="{{ Movie2.MoviePoster.url}}" alt="New York" class="img-thumbnail" width="500px" height="800px"></a>
-            <div class="carousel-caption">
-            <h3 style="color:darkslateblue">{{Movie2.MovieName}}</h3>
-            </div>
+                <h6 style="color:white">{{Movie2.MovieName}}</h6>
+             <a href="{% url 'BookMyMovieApp:ViewMovie' pk1=location_id pk=Movie2.id  %}"
+                style="width: 100%;background-color: darkslategray"> <img src="{{ Movie2.MoviePoster.url}}" alt="New York" class="img-thumbnail" width="800px" height="400px"></a>
+
              </div>
          {% endif %}
 
         {% if Movie3 %}
       <div class="item">
-       <a href="{% url 'BookMyMovieApp:ViewTheatres' pk1=location_id pk=Movie3.id  %}"
-       style="width: 100%;background-color: darkslategray"> <img src="{{ Movie3.MoviePoster.url}}" alt="New York" class="img-thumbnail" width="500px" height="800px"></a>
-        <div class="carousel-caption">
-          <h3 style="color:darkslateblue">{{Movie3.MovieName}}</h3>
-        </div>
+          <h6 style="color:white">{{Movie3.MovieName}}</h6>
+       <a href="{% url 'BookMyMovieApp:ViewMovie' pk1=location_id pk=Movie3.id  %}"
+       style="width: 100%;background-color: darkslategray"> <img src="{{ Movie3.MoviePoster.url}}" alt="New York" class="img-thumbnail" width="800px" height="400px"></a>
+
       </div>
         {% endif %}
 
@@ -247,10 +244,11 @@
 <style>
     #wrapper {
     position: relative;
-        top:5px;
+        top:15px;
     float: right;
+        right:5%;
   display:table;
-        width: 80%;
+        width: 70%;
 
 }
 #row {

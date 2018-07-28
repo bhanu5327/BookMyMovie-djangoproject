@@ -23,14 +23,13 @@ class TheatresListView(ListView):
     template_name = 'TheatreForm.html'
     def get_context_data(self, *, object_list=None, **kwargs):
 
-        context={}
+        context = {}
         context['Theatres_List']=Theatres.objects.all().filter(Location_id=self.kwargs['pk1']).filter(Movie_id=self.kwargs['pk'])
         self.request.session['movie_id'] = self.kwargs['pk']
         self.request.session['theatre_id'] = False
         self.request.session['bookedseats'] = False
         self.request.session['timevalue'] = False
         self.request.session['datevalue'] = False
-        self.request.session['movieinfo'] = False
         self.request.session['payment'] = False
         context['locationid']=self.kwargs['pk1']
         context['movieid']=self.kwargs['pk']
@@ -40,7 +39,29 @@ class TheatresListView(ListView):
         context['enddate']=str(datetime.datetime.now(tz=timezone.utc)+timedelta(days=7)).split()[0]
         return context
     def post(self,request,*args,**kwargs):
+        now = datetime.datetime.now()
+        import pytz
+        tz = pytz.timezone('Asia/Kolkata')
+        your_now = now.astimezone(tz)
+        t = str(your_now)
+        t = t.split()
 
+        if t[0] == request.POST['date']:
+            t = t[1].split(':')
+            t = int(t[0])
+            t1 = 0
+            if request.POST['time'] == "11:00AM":
+                t1 = 11
+            elif request.POST['time'] == "2:00PM":
+                t1 = 14
+            elif request.POST['time'] == "6:00PM":
+                t1 = 18
+            elif request.POST['time'] == "9:00PM":
+                t1 = 21
+            if t >= t1:
+                self.request.session['invalidtime'] = True
+                return redirect('BookMyMovieApp:ViewTheatres', pk1=self.request.session['location_id'],
+                                pk=self.request.session['movie_id'])
         return redirect('BookMyMovieApp:ViewSeats', pk=request.POST['theatre_id'] ,datevalue=request.POST['date'],timevalue=request.POST['time'])
 
 

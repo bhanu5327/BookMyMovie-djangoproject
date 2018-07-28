@@ -25,13 +25,14 @@ class SeatsListView(ListView):
     context_object_name = 'Seats_List'
     template_name = 'SeatsForm.html'
     def get_context_data(self, *, object_list=None, **kwargs):
+
+        self.request.session['invalidtime'] = False
         context=super(SeatsListView,self).get_context_data(**kwargs)
         context['theatreid']=self.kwargs['pk']
         self.request.session['theatre_id'] = self.kwargs['pk']
         self.request.session['bookedseats'] = False
         self.request.session['timevalue'] = self.kwargs['timevalue']
         self.request.session['datevalue'] = self.kwargs['datevalue']
-        self.request.session['movieinfo'] = False
         self.request.session['payment'] = False
         columnslist=[str(i) for i in range(1,11)]
         context['cols']=columnslist
@@ -61,15 +62,7 @@ class SeatsListView(ListView):
         if request.user.is_anonymous:
             return redirect('BookMyMovieApp:LoginNeeded', timevalue=self.kwargs['timevalue'],
                             datevalue=self.kwargs['datevalue'], pk1=self.kwargs['pk'], pk=request.POST['paycost'],
-                            bookedseats=request.POST['allseats'],log="log")
+                            bookedseats=request.POST['allseats'][0:-1],log="log")
         else:
-            while(request.POST['allseats'][index:index+2]!=''):
-                seat=SeatsInfo(SeatNumber=request.POST['allseats'][index:index+2],SeatCost=100,MovieDate=self.kwargs['datevalue'],
-                              MovieTime=self.kwargs['timevalue'], BookedDateTime=str(datetime.datetime.now(tz=timezone.utc)))
-                seat.Theatre=theatre
-                seat.User=request.user
-                seat.save()
-                index=index+2
 
-
-            return redirect('BookMyMovieApp:BookingSummary',timevalue=self.kwargs['timevalue'],datevalue=self.kwargs['datevalue'], pk1=self.kwargs['pk'],pk=request.POST['paycost'],bookedseats=request.POST['allseats'])
+            return redirect('BookMyMovieApp:BookingSummary',timevalue=self.kwargs['timevalue'],datevalue=self.kwargs['datevalue'], pk1=self.kwargs['pk'],pk=request.POST['paycost'],bookedseats=request.POST['allseats'][0:-1])

@@ -23,10 +23,11 @@ background-color: dimgrey;
 <br><br><br><br>
 <div class="container" >
 
-    <form action="" method="post" enctype="multipart/form-data">
+
         {% csrf_token %}
         <div align="center">
-
+        <a class="btn btn-primary"   href="{% url 'BookMyMovieApp:ViewSeats' pk=request.session.theatre_id timevalue=request.session.timevalue datevalue=request.session.datevalue%}">Click This To Go To Seats Page</a>
+    <a class="btn btn-primary"   href="{%url 'BookMyMovieApp:ViewMovies' pk=request.session.location_id%}">Click This To Go To Movies Page</a>
         <div class="borderexample" >
             <br>
             <div align="center"><strong>Booked Information</strong></div>
@@ -41,7 +42,7 @@ background-color: dimgrey;
             <div align="center">Amount  Paid:
                 <strong>{{paycost}}/-</strong>
             </div>
-        </div><br>
+        </div>
             <center>
             <div class="alert alert-success">
              <strong>Booked successfully! Your TicketInfo sent to your Mail.</strong>
@@ -50,7 +51,6 @@ background-color: dimgrey;
         </div>
 
 
-</form>
 
 </div>
 </body>

@@ -41,6 +41,12 @@ class LoginForm(forms.Form):
         required=True,
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password '})
     )
+class ForgotPasswordForm(forms.Form):
+    code = forms.CharField(
+        max_length=15,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '4-digit code'})
+    )
 # class SignUp(forms.Form):
 #     # widgets = {
 #     #     'FirstName': forms.TextInput(attrs={'class': 'form-control'}),

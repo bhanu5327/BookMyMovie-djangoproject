@@ -9,8 +9,9 @@
 {%endif%}
 
 
-
-
+    {%if request.session.invalidtime%}
+    <div align="center" class="alert-danger"><strong>***Select Valid Time ***</strong></div>
+    {%endif%}
     {% for theatre in Theatres_List %}
             <div id="container" style="border-style: inset;border-width: thick;height: 160px">
                 <div style="float: left;width: 25%">
@@ -28,9 +29,13 @@
 
 
                 <button   class="btn btn-primary" name="time"  value="11:00AM" >11:00AM</button>
+
                      <button  class="btn btn-primary" name="time"  value="2:00PM" >2:00PM</button>
+
                     <button  class="btn btn-primary" name="time" value="6:00PM" >6:00PM</button>
+
                     <button  class="btn btn-primary" name="time" value="9:00PM" >9:00PM</button>
+
                 </p>
 
                     <input type="hidden" name="theatre_id" value="{{theatre.id}}"/>

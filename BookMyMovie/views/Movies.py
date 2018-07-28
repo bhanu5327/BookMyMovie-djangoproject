@@ -11,8 +11,10 @@ from django.contrib.auth.models import Permission,User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.contrib.auth import logout
+import random
 raise_exception=True
 Location_Global=1
+
 class SignUpView(View):
     def get(self,request):
         form_class = SignUpForm
@@ -31,6 +33,16 @@ class SignUpView(View):
         return redirect('BookMyMovieApp:login_html')
 class LoginView(View):
     def get(self,request):
+        try:
+            if (request.session['step3'] == False):
+                request.session['step3f'] = False
+        except:
+            pass
+        request.session['step1f']=False
+        request.session['step2f'] = False
+        request.session['step3'] = False
+        request.session['step2'] = False
+        request.session['step1'] = False
         form_class = LoginForm
         return render(request,template_name='Login.html',context={'form':form_class})
 
@@ -38,8 +50,7 @@ class LoginView(View):
 
         username=request.POST['username']
         password=request.POST['password']
-        import ipdb
-        ipdb.set_trace()
+
         user=authenticate(request,username=username,password=password)
         if user is not None:
             login(request,user)
@@ -56,7 +67,78 @@ def LogoutView(request):
     logout(request)
     return redirect('BookMyMovieApp:login_html')
 
+class ForgotPassword1View(View):
+    def get(self, request):
+        if request.session['step1']==False:
+            request.session['step1f'] = False
+        request.session['step1'] = False
+        form_class=LoginForm
+        return render(request,'ForgotPassword1.html',context={'form':form_class})
+    def post(self,request,*args,**kwargs):
+        request.session['step1']=request.POST['username']
+        try:
+            user=User.objects.get(username=request.POST['username'])
+            return redirect('BookMyMovieApp:forgotpassword2_html')
+        except:
+            request.session['step1f']=True
+            return redirect('BookMyMovieApp:forgotpassword1_html')
 
+
+class ForgotPassword2View(View):
+    def get(self, request):
+        if request.session['step1']:
+            if request.session['step2']==False:
+                request.session['step2f'] = False
+            request.session['step2'] = False
+            request.session['step1f']=False
+            form_class=ForgotPasswordForm
+            code = random.randint(1000, 9999)
+            user = User.objects.get(username=request.session['step1'])
+            uname=user.username
+            email=user.email
+            request.session['step2']=str(code)
+            sendmailView(request, code, uname, email)
+            return render(request,'ForgotPassword2.html',context={'form':form_class,'user':user})
+        else:
+            return render(request,'NOTFOUND.html',context={})
+    def post(self,request,*args,**kwargs):
+
+
+        if(request.session['step2']==request.POST['code']):
+            request.session['step2'] = request.POST['code']
+            return redirect('BookMyMovieApp:forgotpassword3_html')
+        else:
+            request.session['step2'] = request.POST['code']
+            request.session['step2f'] = True
+            return redirect('BookMyMovieApp:forgotpassword2_html')
+class ForgotPassword3View(View):
+    def get(self, request):
+        if request.session['step2'] and request.session['step1']:
+            request.session['step2f'] = False
+            form_class = LoginForm
+            return render(request, 'ForgotPassword3.html', context={'form': form_class})
+        else:
+            return render(request,'NOTFOUND.html',context={})
+
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(username=request.session['step1'])
+        request.session['step3']=request.POST['password']
+        user.set_password(request.POST['password'])
+        user.save()
+        return redirect('BookMyMovieApp:login_html')
+
+from django.core.mail import send_mail
+def sendmailView(request,code,uname,email):
+
+    subject = 'bookmymovie'
+    from_email = ''
+    message='<div align="center"><div align="center">'\
+            '<strong>UserName:'+str(uname)+'</strong><br>'\
+            '<strong>Verification-Code:'+str(code)+'</strong></div></div>'
+    to_email = [email]
+
+
+    send_mail(subject="BookMyMovieTickets",message="",from_email=from_email,recipient_list=to_email,html_message=message)
 class LocationsListView(ListView):
 
     model = Locations
@@ -181,7 +263,7 @@ class MoviesListView(ListView):
         p1 = []
         MoviesList=l
         for i in range(len(MoviesList)):
-            if i % 4 == 0 and i != 0:
+            if i % 3 == 0 and i != 0:
                 p.append(p1)
                 p1 = []
             p1.append(MoviesList[i])
@@ -277,6 +359,11 @@ class DetailedMovieView(DetailView):
         self.request.session['location_id']=self.kwargs['pk1']
         self.request.session['movie_id'] = self.kwargs['pk']
         self.request.session['movieinfo']=True
+        self.request.session['theatre_id'] = False
+        self.request.session['bookedseats'] = False
+        self.request.session['timevalue'] = False
+        self.request.session['datevalue'] = False
+        self.request.session['payment'] = False
         dict['movie']=Movie
         return dict
 

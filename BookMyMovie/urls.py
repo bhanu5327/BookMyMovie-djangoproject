@@ -15,6 +15,9 @@ urlpatterns=[
     path('signup/',SignUpView.as_view(),name="signup_html"),
     path('login/',LoginView.as_view(),name="login_html"),
     path('logout/',LogoutView,name="logout_html"),
+    path('resetpassword/step1/',ForgotPassword1View.as_view(),name="forgotpassword1_html"),
+    path('resetpassword/step2/',ForgotPassword2View.as_view(),name="forgotpassword2_html"),
+    path('resetpassword/step3/',ForgotPassword3View.as_view(),name="forgotpassword3_html"),
 
     path('locations/',LocationsListView.as_view(),name='ViewLocations'),
     path('locations/add/',CreateLocationView.as_view(),name='AddLocation'),

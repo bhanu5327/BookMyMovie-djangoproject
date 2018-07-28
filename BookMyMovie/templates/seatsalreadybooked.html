@@ -1,0 +1,18 @@
+{% extends "base.html"%}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<br>
+<br>
+<br>
+<center>
+<strong>****Your Requested Seats Already Booked****</strong>
+    <br>
+<a class="btn btn-primary"   href="{% url 'BookMyMovieApp:ViewSeats' pk=request.session.theatre_id timevalue=request.session.timevalue datevalue=request.session.datevalue%}">Click This To Go To Seats Page</a>
+    <a class="btn btn-primary"   href="{%url 'BookMyMovieApp:ViewMovies' pk=request.session.location_id%}">Click This To Go To Movies Page</a>
+</center>
+</body>
+{% endblock %}

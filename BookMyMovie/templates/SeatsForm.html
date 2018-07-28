@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 <body style="background-color: dimgray">
 <div class="container" xmlns="http://www.w3.org/1999/html">
     <form action="" method="post" enctype="multipart/form-data">
@@ -16,15 +17,15 @@
         function selectSeats(id)
         {
             document.getElementById(id).style.backgroundColor="red";
-            if (!s.includes(id))
+            if (!s.includes(id+','))
             {
-                s = s + id;
+                s = s + id+',';
 
                 total=total+ticketcost;
             }
             else
             {
-                s = s.replace(id,"");
+                s = s.replace(id+',',"");
                 total=total-ticketcost;
                 document.getElementById(id).style.backgroundColor="";
             }
@@ -59,9 +60,12 @@
                     {% for col in row %}
                     {% if col in seatsbookedlist %}
 
-                        <td><a  class="btn btn-default active" style="background-color: black;color:whitesmoke" >{{col}}</a></td>
+                        <td><label>  <img src="{%static 'images/cinema-seat.png'%}" width="30px"
+                      onclick="selectSeats(id)" ><strong>{{col}}</strong></label></td>
                     {% else %}
-                    <td><a  class="btn btn-default active" onclick="selectSeats(id)" id={{col}}>{{col}}</a></td>
+                    <td>
+                      <label>  <img src="{%static 'images/cinema-emptyseat.png'%}" width="30px"
+                      onclick="selectSeats(id)" id={{col}}>{{col}}</label></td>
                     {% endif %}
                     {%  endfor %}
 
@@ -72,6 +76,10 @@
 </table>
     <br>
     <br>
+    <div align="right">
+        <label><img src="{%static 'images/cinema-seat.png'%}" width="30px" >BookedSeat</label>
+        <label><img src="{%static 'images/cinema-emptyseat.png'%}" width="30px" >EmptySeat</label>
+    </div>
     <div align="center"><strong style="color: black">All eyes this way please</strong></div>
     <br>
     <strong style="color: black">TotalCost: </strong> <input readonly="True" type="hidden" name="paycost" id="paycost"/>
